@@ -3,6 +3,7 @@ package com.ds.pokemon
 import android.app.Application
 import com.ds.pokemon.ioc.koin.integrationModule
 import com.ds.pokemon.ioc.koin.presentationModule
+import com.ds.pokemon.ioc.koin.useCaseModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.BuildConfig.DEBUG
@@ -31,6 +32,7 @@ class PokemonApp: Application(), CoroutineScope {
             modules(
                 module { single<CoroutineScope> { this@PokemonApp } },
                 integrationModule,
+                useCaseModule,
                 presentationModule
             )
         }
