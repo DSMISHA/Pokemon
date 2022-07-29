@@ -5,4 +5,6 @@
     <string name="pokemons_search_hint">search pokemon</string>
     <string name="error_loading_text">Some error has happened</string>
     <string name="error_loading_btn_title">CLOSE</string>
+    <string name="pokemon_empty_name">no name</string>
+    <string name="pokemon_abilities">Abilities</string>
 </resources>
