@@ -1,4 +1,4 @@
-package com.ds.pokemon.domain.pokemonData
+package com.ds.pokemon.data.pokemonData
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

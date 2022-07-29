@@ -1,7 +1,7 @@
 package com.ds.pokemon.driver
 
-import com.ds.pokemon.domain.pokemon.PokemonResult
-import com.ds.pokemon.domain.pokemonData.PokemonDataModel
+import com.ds.pokemon.data.pokemon.PokemonResult
+import com.ds.pokemon.data.pokemonData.PokemonDataModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
