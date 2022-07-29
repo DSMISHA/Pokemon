@@ -1,5 +1,6 @@
 package com.ds.pokemon.ui.pokemon_list
 
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.WindowManager
@@ -10,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ds.pokemon.databinding.ActivityPokemonsListBinding
-import com.ds.pokemon.extension.setEnabling
 import com.ds.pokemon.extension.showErrorSnackBar
 import com.ds.pokemon.presentation.pokemon.Pokemon
 import com.ds.pokemon.ui.pokemon_data.PokemonDataDialog
@@ -31,7 +31,6 @@ class PokemonListActivity : AppCompatActivity() {
 
         subscribeOnError()
         subscribeOnPokemonsData()
-        initSearchView()
     }
 
     /**
@@ -54,6 +53,7 @@ class PokemonListActivity : AppCompatActivity() {
                 is PokemonListViewModel.PokemonListState.Data -> {
                     showPokemons(it.pokemons)
                     showLoading(false)
+                    initSearchView()
                 }
                 else -> {
                     //no op
@@ -65,6 +65,7 @@ class PokemonListActivity : AppCompatActivity() {
     /** Initializes the search view at bottom of a screen */
     private fun initSearchView() {
         setSearchViewPosition(getScreenWidth())
+        binding.search.isVisible = true
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) viewModel.filter(query)
@@ -81,7 +82,6 @@ class PokemonListActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progress.isVisible = isLoading
-        binding.progress.setEnabling(!isLoading)
     }
 
     /** Initializes pokemon adapter and shows list of pokemons */
@@ -100,8 +100,9 @@ class PokemonListActivity : AppCompatActivity() {
 
     /** Calculates width and margins for search view */
     private fun setSearchViewPosition(screenWidth: Int) {
-        val horizontalMargin = 100
-        binding.search.maxWidth = screenWidth - horizontalMargin
+        val horizontalMargin = if (isLandscapeOrientation()) 0 else 100
+        binding.search.maxWidth =
+            if (isLandscapeOrientation()) Int.MAX_VALUE else screenWidth - horizontalMargin
         val params = binding.search.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(
             horizontalMargin / 2,
@@ -125,4 +126,7 @@ class PokemonListActivity : AppCompatActivity() {
             display.getMetrics(outMetrics)
             outMetrics.widthPixels
         }
+
+    private fun isLandscapeOrientation() =
+        resources.configuration.orientation == ORIENTATION_LANDSCAPE
 }
