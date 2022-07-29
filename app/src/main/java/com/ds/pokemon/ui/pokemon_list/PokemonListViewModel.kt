@@ -15,23 +15,28 @@ import kotlinx.coroutines.launch
 
 class PokemonListViewModel(private val getPokemonsUseCase: GetPokemonsUseCase) : ViewModel() {
 
+    /** Pokemon data source for observing */
     private val _pokemons = MutableLiveData<PokemonListState>()
     val pokemons = _pokemons.asLiveData()
 
+    /** Error loading event flow */
     private val _error = MutableSharedFlow<PokemonListState.Error>()
     val error get() = _error.asSharedFlow()
 
+    /** Contains all pokemons after loading without filtering  */
     private val allPokemons = MutableLiveData<List<Pokemon>>(listOf())
 
+    /** Filter query */
     private val filter = MutableStateFlow("")
 
+    /** Coroutine context with Dispatcher and Error Handler */
     private val context = Dispatchers.IO + CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch { _error.emit(PokemonListState.Error) }
     }
 
     private fun start() {
-        loadPokemons()
-        subscribeOnSearch()
+        loadPokemons() //starts pokemon data loading
+        subscribeOnSearch() //subscribes on search input query
     }
 
     private fun loadPokemons() {
@@ -40,17 +45,20 @@ class PokemonListViewModel(private val getPokemonsUseCase: GetPokemonsUseCase) :
             val result = getPokemonsUseCase().sortedBy { it.name }
             allPokemons.postValue(result)
             val query = filter.value
+            //filters list of pokemos if a query predefined
             val state = PokemonListState.Data(result.filterByName(query))
             _pokemons.postValue(state)
         }
     }
 
+    /** This method takes searching queries and emmit them to collector with debounce */
     fun filter(str: String) {
         viewModelScope.launch {
             filter.emit(str.lowercase())
         }
     }
 
+    /** Collects searching queries and make filtering after debounce */
     @OptIn(FlowPreview::class)
     private fun subscribeOnSearch() {
         viewModelScope.launch {
@@ -61,6 +69,7 @@ class PokemonListViewModel(private val getPokemonsUseCase: GetPokemonsUseCase) :
         }
     }
 
+    /** Three variants of pokemon data */
     sealed class PokemonListState {
         object Loading : PokemonListState()
         data class Data(val pokemons: List<Pokemon>) : PokemonListState()
@@ -70,9 +79,11 @@ class PokemonListViewModel(private val getPokemonsUseCase: GetPokemonsUseCase) :
     companion object {
         private const val TIME_DEBOUNCE = 500L
 
+        /** This method creates the ViewModel */
         fun create(getPokemonsUseCase: GetPokemonsUseCase) =
             PokemonListViewModel(getPokemonsUseCase).apply { start() }
     }
 
+    /** filter strategy */
     private fun List<Pokemon>.filterByName(query: String) = filter { it.name.startsWith(query) }
 }

@@ -7,7 +7,9 @@ import org.koin.dsl.module
 
 val presentationModule = module {
 
+    /** Provides PokemonListViewModel */
     viewModel { PokemonListViewModel.create(get()) }
 
+    /** Provides PokemonDataViewModel */
     viewModel { (pokemonId: String) -> PokemonDataViewModel.create(pokemonId, get()) }
 }

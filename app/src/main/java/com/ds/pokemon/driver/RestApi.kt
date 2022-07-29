@@ -9,9 +9,11 @@ import retrofit2.http.QueryMap
 
 interface RestApi {
 
+    /** get pokemon list from rest api */
     @GET("pokemon")
     suspend fun getPokemons(@QueryMap params: HashMap<String, Int>): Response<PokemonResult>
 
+    /** get pokemon extended data from rest api */
     @GET("pokemon/{pokemonId}")
     suspend fun getPokemonData(@Path("pokemonId") pokemonId: String): Response<PokemonDataModel>
 }

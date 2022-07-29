@@ -25,6 +25,7 @@ class PokemonApp: Application(), CoroutineScope {
         startKoin()
     }
 
+    /** DI initialization */
     private fun startKoin() {
         org.koin.core.context.startKoin {
             androidLogger(if (DEBUG) Level.ERROR else Level.NONE)
@@ -36,5 +37,10 @@ class PokemonApp: Application(), CoroutineScope {
                 presentationModule
             )
         }
+    }
+
+    override fun onTerminate() {
+        scopeLifecycle.cancel()
+        super.onTerminate()
     }
 }
