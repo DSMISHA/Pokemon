@@ -60,6 +60,7 @@ class PokemonListActivity : AppCompatActivity() {
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) viewModel.filter(query)
+                if (!binding.search.isIconified) binding.search.clearFocus()
                 return true
             }
 
