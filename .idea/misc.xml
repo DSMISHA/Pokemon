@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../Library/Android/sdk/platforms/android-32/data/res/drawable/gallery_thumb.xml" value="0.212" />
+        <entry key="app/src/main/res/drawable/background_all_corners_rounded.xml" value="0.212" />
+        <entry key="app/src/main/res/drawable/ic_close_dialog.xml" value="0.212" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.212" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34717948717948716" />
         <entry key="app/src/main/res/layout/activity_pokemons_list.xml" value="0.3175925925925926" />
+        <entry key="app/src/main/res/layout/fragment_pokemon_data.xml" value="0.3175925925925926" />
         <entry key="app/src/main/res/layout/item_pokemon.xml" value="0.3175925925925926" />
         <entry key="app/src/main/res/layout/view_search.xml" value="0.3175925925925926" />
       </map>

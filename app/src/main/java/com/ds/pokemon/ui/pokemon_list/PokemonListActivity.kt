@@ -1,17 +1,18 @@
 package com.ds.pokemon.ui.pokemon_list
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ds.pokemon.R
 import com.ds.pokemon.databinding.ActivityPokemonsListBinding
 import com.ds.pokemon.extension.setEnabling
+import com.ds.pokemon.extension.showErrorSnackBar
 import com.ds.pokemon.presentation.pokemon.Pokemon
-import com.google.android.material.snackbar.Snackbar
+import com.ds.pokemon.ui.pokemon_data.PokemonDataDialog
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -25,8 +26,18 @@ class PokemonListActivity : AppCompatActivity() {
         binding = ActivityPokemonsListBinding.inflate(layoutInflater)
             .also { setContentView(it.root) }
 
+        subscribeOnError()
         subscribeOnPokemonsData()
         initSearchView()
+    }
+
+    private fun subscribeOnError() {
+        lifecycleScope.launch {
+            viewModel.error.collectLatest {
+                showError()
+                showLoading(false)
+            }
+        }
     }
 
     private fun subscribeOnPokemonsData() {
@@ -34,10 +45,12 @@ class PokemonListActivity : AppCompatActivity() {
             when (it) {
                 is PokemonListViewModel.PokemonListState.Loading -> showLoading(true)
                 is PokemonListViewModel.PokemonListState.Data -> {
-                    showLoading(false)
                     showPokemons(it.pokemons)
+                    showLoading(false)
                 }
-                else -> showError()
+                else -> {
+                    //no op
+                }
             }
         }
     }
@@ -65,18 +78,11 @@ class PokemonListActivity : AppCompatActivity() {
     private fun showPokemons(pokemons: List<Pokemon>) {
         binding.rvPokemons.layoutManager = LinearLayoutManager(this)
         binding.rvPokemons.adapter = PokemonsAdapter(pokemons) {
-            //todo show a pokemon's data
+            PokemonDataDialog.create(it.id, it.name)
+                .show(supportFragmentManager, PokemonDataDialog.TAG)
         }
         binding.tvCount.text = pokemons.size.toString()
     }
 
-    private fun showError() = snackbar(binding.root)
-
-    private fun snackbar(view: View) {
-        Snackbar.make(view, getString(R.string.error_loading_text), Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.error_loading_btn_title)) { }
-            .setActionTextColor(
-                ResourcesCompat.getColor(resources, android.R.color.holo_red_light, null)
-            ).show()
-    }
+    private fun showError() = binding.root.showErrorSnackBar()
 }
