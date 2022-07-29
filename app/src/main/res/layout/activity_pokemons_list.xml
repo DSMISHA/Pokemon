@@ -53,9 +53,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:background="@drawable/background_all_corners_rounded_search"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:queryHint="@string/pokemons_search_hint" />
+        app:queryHint="@string/pokemons_search_hint"
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progress"
