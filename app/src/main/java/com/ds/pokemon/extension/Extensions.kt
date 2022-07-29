@@ -18,12 +18,13 @@ import com.ds.pokemon.R
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
-
+/** enables/disables a view with transparency modifications */
 fun View.setEnabling(isEnabled: Boolean) {
     this.isEnabled = isEnabled
     this.alpha = if (isEnabled) 1.0f else 0.3f
 }
 
+/** loads an image to view from url */
 fun ImageView.loadImage(
     imgUrl: String,
     placeHolder: Drawable? = null,
@@ -58,11 +59,14 @@ fun ImageView.loadImage(
         }
     }).into(this)
 
+/** Capitalizes first letter in a string */
 fun String.capitalize() =
     replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
+/** Returns MutableLiveData object as immutable LiveData */
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 
+/** Shows error snackbar for specified root view */
 fun View.showErrorSnackBar() {
     Snackbar.make(this, resources.getString(R.string.error_loading_text), Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.error_loading_btn_title)) { }

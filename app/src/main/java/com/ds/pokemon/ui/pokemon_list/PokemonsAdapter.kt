@@ -41,15 +41,20 @@ class PokemonsAdapter(
         )
 
         fun onBind(pokemon: Pokemon) {
+            //sets a pokemon name
             binding.tvPokemonName.text = pokemon.name.capitalize()
+            //sets click listener for item
             binding.card.setOnClickListener { onClick(pokemon) }
+            //loads and sets pokemon image to image view
             binding.ivPokemon.loadImage(getImgUrl(pokemon.id), placeHolder, true)
         }
 
+        //combines an image url: url prefix + pokemonId + .png suffix
         private fun getImgUrl(pokemonId: String) = "$IMG_URL_PREFIX$pokemonId.png"
     }
 
     companion object {
+        // Using this url is related with absence of any image data in the list of pokemons
         private const val IMG_URL_PREFIX =
             "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"
     }

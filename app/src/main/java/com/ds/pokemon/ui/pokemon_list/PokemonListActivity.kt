@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
+/** This is Main and single activity of the app that contains list of pokemons */
 class PokemonListActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<PokemonListViewModel>()
@@ -31,6 +31,9 @@ class PokemonListActivity : AppCompatActivity() {
         initSearchView()
     }
 
+    /**
+     * Subscribes on errors which can appear during loading data process for showing them to an user
+     * */
     private fun subscribeOnError() {
         lifecycleScope.launch {
             viewModel.error.collectLatest {
@@ -40,6 +43,7 @@ class PokemonListActivity : AppCompatActivity() {
         }
     }
 
+    /** Subscribes on pokemon list data */
     private fun subscribeOnPokemonsData() {
         viewModel.pokemons.observe(this) {
             when (it) {
@@ -55,8 +59,9 @@ class PokemonListActivity : AppCompatActivity() {
         }
     }
 
+    /** Initializes the search view at bottom of a screen */
     private fun initSearchView() {
-        binding.search.maxWidth = Int.MAX_VALUE
+        binding.search.maxWidth = Int.MAX_VALUE //expands the searchView on max width of a screen
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) viewModel.filter(query)
@@ -76,12 +81,15 @@ class PokemonListActivity : AppCompatActivity() {
         binding.progress.setEnabling(!isLoading)
     }
 
+    /** Initializes pokemon adapter and shows list of pokemons */
     private fun showPokemons(pokemons: List<Pokemon>) {
         binding.rvPokemons.layoutManager = LinearLayoutManager(this)
         binding.rvPokemons.adapter = PokemonsAdapter(pokemons) {
             PokemonDataDialog.create(it.id, it.name)
                 .show(supportFragmentManager, PokemonDataDialog.TAG)
         }
+
+        //shows pokemon count
         binding.tvCount.text = pokemons.size.toString()
     }
 
