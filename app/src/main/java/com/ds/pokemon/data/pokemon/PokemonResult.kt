@@ -1,4 +1,4 @@
-package com.ds.pokemon.domain.pokemon
+package com.ds.pokemon.data.pokemon
 
 import com.ds.pokemon.domain.PokemonModel
 import com.google.gson.annotations.Expose

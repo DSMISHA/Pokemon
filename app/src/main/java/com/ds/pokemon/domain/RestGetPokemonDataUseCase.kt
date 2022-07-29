@@ -1,9 +1,9 @@
 package com.ds.pokemon.domain
 
-import com.ds.pokemon.domain.pokemonData.AbilityModel
-import com.ds.pokemon.domain.pokemonData.OfficialArtWorkModel
-import com.ds.pokemon.domain.pokemonData.OtherModel
-import com.ds.pokemon.domain.pokemonData.SpritesModel
+import com.ds.pokemon.data.pokemonData.AbilityModel
+import com.ds.pokemon.data.pokemonData.OfficialArtWorkModel
+import com.ds.pokemon.data.pokemonData.OtherModel
+import com.ds.pokemon.data.pokemonData.SpritesModel
 import com.ds.pokemon.driver.RestApi
 import com.ds.pokemon.presentation.pokemon_data.*
 
