@@ -1,8 +1,11 @@
 package com.ds.pokemon.ui.pokemon_list
 
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,7 +64,7 @@ class PokemonListActivity : AppCompatActivity() {
 
     /** Initializes the search view at bottom of a screen */
     private fun initSearchView() {
-        binding.search.maxWidth = Int.MAX_VALUE //expands the searchView on max width of a screen
+        setSearchViewPosition(getScreenWidth())
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) viewModel.filter(query)
@@ -94,4 +97,32 @@ class PokemonListActivity : AppCompatActivity() {
     }
 
     private fun showError() = binding.root.showErrorSnackBar()
+
+    /** Calculates width and margins for search view */
+    private fun setSearchViewPosition(screenWidth: Int) {
+        val horizontalMargin = 100
+        binding.search.maxWidth = screenWidth - horizontalMargin
+        val params = binding.search.layoutParams as ConstraintLayout.LayoutParams
+        params.setMargins(
+            horizontalMargin / 2,
+            params.topMargin,
+            horizontalMargin / 2,
+            params.bottomMargin
+        )
+        binding.search.layoutParams = params
+    }
+
+    private fun getScreenWidth() =
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val metrics = getSystemService(WindowManager::class.java).currentWindowMetrics
+            metrics.bounds.right
+        } else {
+            @Suppress("DEPRECATION")
+            val display = windowManager.defaultDisplay
+
+            val outMetrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            display.getMetrics(outMetrics)
+            outMetrics.widthPixels
+        }
 }

@@ -5,6 +5,7 @@
       <map>
         <entry key="../../Library/Android/sdk/platforms/android-32/data/res/drawable/gallery_thumb.xml" value="0.212" />
         <entry key="app/src/main/res/drawable/background_all_corners_rounded.xml" value="0.212" />
+        <entry key="app/src/main/res/drawable/background_all_corners_rounded_search.xml" value="0.212" />
         <entry key="app/src/main/res/drawable/ic_close_dialog.xml" value="0.212" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.212" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34717948717948716" />
